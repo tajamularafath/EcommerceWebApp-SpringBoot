@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Local Storage Example</title>
+</head>
+<body>
+    <form th:action="@{/savelocalstorage}" method="post">
+        <input type="text" name="data" id="dataInput">
+        <button type="submit">Save</button>
+    </form>
+
+    <ul id="dataList"></ul>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var dataList = document.getElementById('dataList');
+
+        // Load existing data from local storage
+        var storedData = localStorage.getItem('myData');
+        if (storedData) {
+            var dataArray = JSON.parse(storedData);
+            dataArray.forEach(function(item) {
+                appendDataItem(item);
+            });
+        }
+
+        // Add or update data item
+        function saveDataItem() {
+            var dataInput = document.getElementById('dataInput');
+            var dataItem = {
+                id: new Date().getTime(), // Generate a unique ID
+                value: dataInput.value
+            };
+
+            var storedData = localStorage.getItem('myData');
+            var dataArray = storedData ? JSON.parse(storedData) : [];
+            var existingItem = dataArray.find(function(item) {
+                return item.id === dataItem.id;
+            });
+
+            if (existingItem) {
+                existingItem.value = dataItem.value; // Update existing item
+            } else {
+                dataArray.push(dataItem); // Add new item
+            }
+
+            localStorage.setItem('myData', JSON.stringify(dataArray));
+            appendDataItem(dataItem);
+
+            // Clear input field
+            dataInput.value = '';
+        }
+
+        // Delete data item
+        function deleteDataItem(itemId) {
+            var storedData = localStorage.getItem('myData');
+            var dataArray = storedData ? JSON.parse(storedData) : [];
+
+            var updatedArray = dataArray.filter(function(item) {
+                return item.id !== itemId;
+            });
+
+            localStorage.setItem('myData', JSON.stringify(updatedArray));
+            removeDataItem(itemId);
+        }
+
+        // Append data item to the list
+        function appendDataItem(item) {
+            var li = document.createElement('li');
+            li.innerHTML = item.value;
+            dataList.appendChild(li);
+
+            var deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', function() {
+                deleteDataItem(item.id);
+            });
+            li.appendChild(deleteButton);
+        }
+
+        // Remove data item from the list
+        function removeDataItem(itemId) {
+            var li = document.querySelector('li[data-id="' + itemId + '"]');
+            if (li) {
+                li.parentNode.removeChild(li);
+            }
+        }
+        /*]]>*/
+    </script>
+</body>
+</html>

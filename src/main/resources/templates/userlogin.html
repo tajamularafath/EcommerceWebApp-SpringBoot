@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Login</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      position: relative;
+      width: 300px;
+      margin: 150px auto;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    .animated-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    
+    @keyframes animatedBackground {
+      0% {
+        background-position: 0 0;
+      }
+      50% {
+        background-position: 100% 0;
+      }
+      100% {
+        background-position: 0 0;
+      }
+    }
+    
+    .animated-background::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #39a6a3, #8a4f7d, #b75d69, #e28e5f);
+      background-size: 400% 400%;
+      animation: animatedBackground 15s ease infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="animated-background"></div>
+  <div class="container">
+    <h2 class="text-center">User Login</h2>
+    <form th:action="@{/checkuserlogin}">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" class="form-control" id="username" placeholder="Enter username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+    <div class="text-center mt-3">
+      <label>Don't have an account? </label>
+      <a href="userregister" class="btn btn-link">Register here</a>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
